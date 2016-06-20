@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<mapview>
+  <view width="800" height="1000" zoom="15">
+    <center lon="7.589619" lat="47.560164"/>
+    <bounds left="7.572453" bottom="47.545684" right="7.606785" top="47.574644"/>
+    <edges left="3219.82" bottom="2583.05" right="2583.0480" top="2584.47"/>
+  </view>
+  <layer index="0" name="empty" visible="false"/>
+  <layer index="1" name="OpenStreetMap" visible="true">
+    <tiles>
+      <tile url="http://b.tile.openstreetmap.org/15/17073/11448.png" row="0" col="0" x="-67" y="-65" opacity="100"/>
+      <tile url="http://c.tile.openstreetmap.org/15/17074/11448.png" row="0" col="1" x="189" y="-65" opacity="100"/>
+      <tile url="http://c.tile.openstreetmap.org/15/17075/11448.png" row="0" col="2" x="445" y="-65" opacity="100"/>
+      <tile url="http://b.tile.openstreetmap.org/15/17076/11448.png" row="0" col="3" x="701" y="-65" opacity="100"/>
+      <tile url="http://a.tile.openstreetmap.org/15/17077/11448.png" row="0" col="4" x="957" y="-65" opacity="100"/>
+      <tile url="http://b.tile.openstreetmap.org/15/17073/11449.png" row="1" col="0" x="-67" y="191" opacity="100"/>
+      <tile url="http://a.tile.openstreetmap.org/15/17074/11449.png" row="1" col="1" x="189" y="191" opacity="100"/>
+      <tile url="http://b.tile.openstreetmap.org/15/17075/11449.png" row="1" col="2" x="445" y="191" opacity="100"/>
+      <tile url="http://a.tile.openstreetmap.org/15/17076/11449.png" row="1" col="3" x="701" y="191" opacity="100"/>
+      <tile url="http://a.tile.openstreetmap.org/15/17077/11449.png" row="1" col="4" x="957" y="191" opacity="100"/>
+      <tile url="http://a.tile.openstreetmap.org/15/17073/11450.png" row="2" col="0" x="-67" y="447" opacity="100"/>
+      <tile url="http://b.tile.openstreetmap.org/15/17074/11450.png" row="2" col="1" x="189" y="447" opacity="100"/>
+      <tile url="http://c.tile.openstreetmap.org/15/17075/11450.png" row="2" col="2" x="445" y="447" opacity="100"/>
+      <tile url="http://b.tile.openstreetmap.org/15/17076/11450.png" row="2" col="3" x="701" y="447" opacity="100"/>
+      <tile url="http://c.tile.openstreetmap.org/15/17077/11450.png" row="2" col="4" x="957" y="447" opacity="100"/>
+      <tile url="http://b.tile.openstreetmap.org/15/17073/11451.png" row="3" col="0" x="-67" y="703" opacity="100"/>
+      <tile url="http://b.tile.openstreetmap.org/15/17074/11451.png" row="3" col="1" x="189" y="703" opacity="100"/>
+      <tile url="http://b.tile.openstreetmap.org/15/17075/11451.png" row="3" col="2" x="445" y="703" opacity="100"/>
+      <tile url="http://a.tile.openstreetmap.org/15/17076/11451.png" row="3" col="3" x="701" y="703" opacity="100"/>
+      <tile url="http://a.tile.openstreetmap.org/15/17077/11451.png" row="3" col="4" x="957" y="703" opacity="100"/>
+      <tile url="http://c.tile.openstreetmap.org/15/17073/11452.png" row="4" col="0" x="-67" y="959" opacity="100"/>
+      <tile url="http://c.tile.openstreetmap.org/15/17074/11452.png" row="4" col="1" x="189" y="959" opacity="100"/>
+      <tile url="http://c.tile.openstreetmap.org/15/17075/11452.png" row="4" col="2" x="445" y="959" opacity="100"/>
+      <tile url="http://a.tile.openstreetmap.org/15/17076/11452.png" row="4" col="3" x="701" y="959" opacity="100"/>
+      <tile url="http://a.tile.openstreetmap.org/15/17077/11452.png" row="4" col="4" x="957" y="959" opacity="100"/>
+    </tiles>
+  </layer>
+  <layer index="2" name="mapquest" visible="false"/>
+  <layer index="3" name="toner" visible="false"/>
+  <layer index="4" name="toner-lite" visible="false"/>
+  <layer index="5" name="toner-hybrid" visible="false"/>
+  <layer index="6" name="toner-lines" visible="true">
+    <tiles>
+      <tile url="http://c.tile.stamen.com/toner-lines/15/17073/11448.png" row="0" col="0" x="-67" y="-65" opacity="100"/>
+      <tile url="http://d.tile.stamen.com/toner-lines/15/17074/11448.png" row="0" col="1" x="189" y="-65" opacity="100"/>
+      <tile url="http://d.tile.stamen.com/toner-lines/15/17075/11448.png" row="0" col="2" x="445" y="-65" opacity="100"/>
+      <tile url="http://b.tile.stamen.com/toner-lines/15/17076/11448.png" row="0" col="3" x="701" y="-65" opacity="100"/>
+      <tile url="http://b.tile.stamen.com/toner-lines/15/17077/11448.png" row="0" col="4" x="957" y="-65" opacity="100"/>
+      <tile url="http://b.tile.stamen.com/toner-lines/15/17073/11449.png" row="1" col="0" x="-67" y="191" opacity="100"/>
+      <tile url="http://a.tile.stamen.com/toner-lines/15/17074/11449.png" row="1" col="1" x="189" y="191" opacity="100"/>
+      <tile url="http://c.tile.stamen.com/toner-lines/15/17075/11449.png" row="1" col="2" x="445" y="191" opacity="100"/>
+      <tile url="http://a.tile.stamen.com/toner-lines/15/17076/11449.png" row="1" col="3" x="701" y="191" opacity="100"/>
+      <tile url="http://b.tile.stamen.com/toner-lines/15/17077/11449.png" row="1" col="4" x="957" y="191" opacity="100"/>
+      <tile url="http://a.tile.stamen.com/toner-lines/15/17073/11450.png" row="2" col="0" x="-67" y="447" opacity="100"/>
+      <tile url="http://b.tile.stamen.com/toner-lines/15/17074/11450.png" row="2" col="1" x="189" y="447" opacity="100"/>
+      <tile url="http://d.tile.stamen.com/toner-lines/15/17075/11450.png" row="2" col="2" x="445" y="447" opacity="100"/>
+      <tile url="http://c.tile.stamen.com/toner-lines/15/17076/11450.png" row="2" col="3" x="701" y="447" opacity="100"/>
+      <tile url="http://d.tile.stamen.com/toner-lines/15/17077/11450.png" row="2" col="4" x="957" y="447" opacity="100"/>
+      <tile url="http://b.tile.stamen.com/toner-lines/15/17073/11451.png" row="3" col="0" x="-67" y="703" opacity="100"/>
+      <tile url="http://b.tile.stamen.com/toner-lines/15/17074/11451.png" row="3" col="1" x="189" y="703" opacity="100"/>
+      <tile url="http://c.tile.stamen.com/toner-lines/15/17075/11451.png" row="3" col="2" x="445" y="703" opacity="100"/>
+      <tile url="http://a.tile.stamen.com/toner-lines/15/17076/11451.png" row="3" col="3" x="701" y="703" opacity="100"/>
+      <tile url="http://a.tile.stamen.com/toner-lines/15/17077/11451.png" row="3" col="4" x="957" y="703" opacity="100"/>
+      <tile url="http://c.tile.stamen.com/toner-lines/15/17073/11452.png" row="4" col="0" x="-67" y="959" opacity="100"/>
+      <tile url="http://d.tile.stamen.com/toner-lines/15/17074/11452.png" row="4" col="1" x="189" y="959" opacity="100"/>
+      <tile url="http://c.tile.stamen.com/toner-lines/15/17075/11452.png" row="4" col="2" x="445" y="959" opacity="100"/>
+      <tile url="http://a.tile.stamen.com/toner-lines/15/17076/11452.png" row="4" col="3" x="701" y="959" opacity="100"/>
+      <tile url="http://b.tile.stamen.com/toner-lines/15/17077/11452.png" row="4" col="4" x="957" y="959" opacity="100"/>
+    </tiles>
+  </layer>
+  <layer index="7" name="toner-background" visible="false"/>
+  <layer index="8" name="tile info" visible="false"/>
+</mapview>

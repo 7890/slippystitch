@@ -1,0 +1,137 @@
+#!/bin/sh
+
+#prerequisites:
+#-all layers use tiles of size 256x256 pixels
+#-all tile servers use url pattern /{z}/{x}/{y}*
+
+#//tb/1606
+
+#map background; none: transparent
+background=none
+#background=blue
+
+#========================================================================
+if [ $# -lt 1 ]
+then
+	echo "slippystitch: need argument: XML file">&2
+
+	echo "">&2
+	echo "***help***">&2
+	echo "slippystitch creates an image from layer tiles and writes it to stdout as a png file.">&2
+	exit 1
+fi
+
+stitching_file="$1"
+tmpdir_out=`mktemp -d`
+
+#========================================================================
+checkAvail()
+{
+	which "$1" >/dev/null 2>&1
+	ret=$?
+	if [ $ret -ne 0 ]
+	then
+		echo "tool \"$1\" not found. please install">&2
+		exit 1
+	fi
+}
+
+#========================================================================
+process()
+{
+	cur=`pwd`
+
+	#replace space with underline
+	layername_to_render="$1"
+
+	echo "processing layer $layername_to_render">&2
+
+	tile_count=`cat "$stitching_file" | xmlstarlet sel -t -v "count(//layer[@name='$layername_to_render']/tiles/tile)"`
+
+	if [ $tile_count -lt 1 ]
+	then
+		echo "/!\\ layer has no tiles">&2
+		echo "">&2
+		return
+	fi
+
+	layername_without_space=`echo "$layername_to_render" | sed 's/ /_/g'`
+	out_filename="$tmpdir_out"/"$layername_without_space".png
+	echo "writing output to $out_filename">&2
+
+	tmpdir=`mktemp -d`
+
+	echo "temporary working dir: $tmpdir">&2
+
+	echo "parsing data from $stitching_file">&2
+	map_width=`cat "$stitching_file" | xmlstarlet sel -t -m "//view[@width]" -v @width`
+	map_height=`cat "$stitching_file" | xmlstarlet sel -t -m "//view[@height]" -v @height`
+
+	#extract tile urls
+	cat "$stitching_file" | xmlstarlet sel -t -m "//layer[@name='$layername_to_render']/tiles/tile[@url]" -v @url -n \
+		> "$tmpdir"/tile_urls.tmp.txt
+	#create list of tile directories (prevent files with the same name)
+	cat "$tmpdir"/tile_urls.tmp.txt | rev | cut -d"/" -f2,3 | rev \
+		> "$tmpdir"/dirs_to_create.tmp.txt
+	#calc max_row (1-based)
+	max_row=`cat $stitching_file | xmlstarlet sel -t -m "//layer[@name='$layername_to_render']/tiles/tile[@row]" -v @row+1 -n | sort -n | tail -1`
+	#calc max col (1-based)
+	max_col=`cat $stitching_file | xmlstarlet sel -t -m "//layer[@name='$layername_to_render']/tiles/tile[@col]" -v @col+1 -n | sort -n | tail -1`
+	#get negative viewport tile offset, make it positive
+	x_off=`cat $stitching_file | xmlstarlet sel -t -m "//layer[@name='$layername_to_render']/tiles/tile[@x]" -v @x -n | sort -n -r | uniq | tail -1 | egrep -o "[0-9]*"`
+	y_off=`cat $stitching_file | xmlstarlet sel -t -m "//layer[@name='$layername_to_render']/tiles/tile[@y]" -v @y -n | sort -n -r | uniq | tail -1 | egrep -o "[0-9]*"`
+
+	#now working relative from tmpdir
+	cd "$tmpdir"
+	echo "creating directories for tiles">&2
+	cat dirs_to_create.tmp.txt | while read line; do mkdir -p $line; done
+
+	echo "creating download commands">&2
+	cat tile_urls.tmp.txt | while read line; do file_uri=`echo $line|rev|cut -d"/" -f1-3|rev`.png; echo "echo -n ".">&2; wget --quiet -O $file_uri $line"; done \
+		> wget_commands.tmp.txt
+	echo "echo . >&2" >> wget_commands.tmp.txt
+
+	echo -n "downloading tiles">&2
+	sh wget_commands.tmp.txt
+
+	echo "grouping cols">&2
+	find . | grep "\.png$" | sort -n > images.tmp.txt
+	cat images.tmp.txt| cut -d"/" -f3 | uniq > all_x.tmp.txt
+
+	echo "creating commands for montage (cols)">&2
+	cat all_x.tmp.txt | while read line; do echo -n "montage -tile 1x${rows} -geometry 256x256+0+0 -background none +repage "; a=`cat images.tmp.txt | grep $line`; echo $a ${line}_col.png; done \
+		> montage_commands.tmp.txt
+
+	echo "executing tile montage (cols)">&2
+	sh montage_commands.tmp.txt
+	echo "executing tile montage (append cols)">&2
+	convert `ls -1 *_col.png | sort -n` -alpha on +append +repage out_.png
+
+	crop_geometry=${map_width}x${map_height}+${x_off}+${y_off}
+
+	echo "cropping image to view $crop_geometry">&2
+	convert -crop $crop_geometry out_.png -alpha on +repage "$out_filename"
+
+	echo "removing temporary working dir: $tmpdir">&2
+	rm -rf "$tmpdir"
+
+	echo "layer done!">&2
+	echo "">&2	
+
+	cd "$cur"
+}
+#end process()
+
+#========================================================================
+for tool in cat cut rev find mkdir bc date sed convert montage sort uniq xmlstarlet wget; \
+	do checkAvail "$tool"; done
+
+#match visible layers with at least one tile
+cat "$stitching_file" | xmlstarlet sel -t -m "//layer[@name and @visible='true' and count(./tiles/tile) > 0 ]" -v @name -n \
+	| while read line; do process "$line"; done
+
+cd "$tmpdir_out"
+convert -background $background `ls -1tr *.png` -flatten -
+rm -rf "$tmpdir_out"
+
+echo "all done.">&2
