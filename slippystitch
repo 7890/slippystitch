@@ -69,9 +69,11 @@ process()
 
 	#extract tile urls
 	cat "$stitching_file" | xmlstarlet sel -t -m "//layer[@name='$layername_to_render']/tiles/tile[@url]" -v @url -n \
+		| sed '/^\s*$/d' \
 		> "$tmpdir"/tile_urls.tmp.txt
 	#create list of tile directories (prevent files with the same name)
 	cat "$tmpdir"/tile_urls.tmp.txt | rev | cut -d"/" -f2,3 | rev \
+		| sed '/^\s*$/d' \
 		> "$tmpdir"/dirs_to_create.tmp.txt
 	#calc max_row (1-based)
 	max_row=`cat $stitching_file | xmlstarlet sel -t -m "//layer[@name='$layername_to_render']/tiles/tile[@row]" -v @row+1 -n | sort -n | tail -1`
@@ -88,6 +90,7 @@ process()
 
 	echo "creating download commands">&2
 	cat tile_urls.tmp.txt | while read line; do file_uri=`echo $line|rev|cut -d"/" -f1-3|rev`.png; echo "echo -n ".">&2; wget --quiet -O $file_uri $line"; done \
+		| sed '/^\s*$/d' \
 		> wget_commands.tmp.txt
 	echo "echo . >&2" >> wget_commands.tmp.txt
 
@@ -100,6 +103,7 @@ process()
 
 	echo "creating commands for montage (cols)">&2
 	cat all_x.tmp.txt | while read line; do echo -n "montage -tile 1x${rows} -geometry 256x256+0+0 -background none +repage "; a=`cat images.tmp.txt | grep $line`; echo $a ${line}_col.png; done \
+		| sed '/^\s*$/d' \
 		> montage_commands.tmp.txt
 
 	echo "executing tile montage (cols)">&2
