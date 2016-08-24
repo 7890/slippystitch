@@ -89,7 +89,7 @@ process()
 	cat dirs_to_create.tmp.txt | while read line; do mkdir -p $line; done
 
 	echo "creating download commands">&2
-	cat tile_urls.tmp.txt | while read line; do file_uri=`echo $line|rev|cut -d"/" -f1-3|rev`.png; echo "echo -n ".">&2; wget --quiet -O $file_uri $line"; done \
+	cat tile_urls.tmp.txt | while read line; do file_uri=`echo $line|rev|cut -d"/" -f1-3|rev`.png; echo "echo -n ".">&2; wget --no-check-certificate --quiet -O $file_uri $line"; done \
 		| sed '/^\s*$/d' \
 		> wget_commands.tmp.txt
 	echo "echo . >&2" >> wget_commands.tmp.txt
