@@ -1,0 +1,41 @@
+#!/bin/sh
+
+###needs tools check (incl. svgimage, java)
+
+#========================================================================
+if [ $# -lt 1 ]
+then
+	echo "slippysvg: need argument: XML file">&2
+
+	echo "">&2
+	echo "***help***">&2
+	echo "slippysvg creates a svg file using slippystitch, svgimage, create_path_from_geometry.sh using data from the XML file">&2
+	exit 1
+fi
+
+#first arg: xml file
+view_xml="$1"
+
+#make sure OScale is current (optional)
+javac OScale.java
+
+tmpdir=`mktemp -d`
+
+./slippystitch "$view_xml" > "$tmpdir"/map_raw.png
+svgimage "$tmpdir"/map_raw.png > "$tmpdir"/map_raw.svg
+
+./create_path_from_geometry.sh "$view_xml" > "$tmpdir"/geo_path.svg
+
+meter_per_pixel=`cat "$view_xml" | xmlstarlet sel -t -m "//view" -v @meter_per_pixel`
+map_height=`cat "$view_xml" | xmlstarlet sel -t -m "//view" -v @height`
+
+scale_height=`echo "$map_height - 50"|bc`
+
+#append geo path, scale & windrose
+(cat "$tmpdir"/map_raw.svg | grep -v '</svg>'; 
+	cat "$tmpdir"/geo_path.svg;
+	java -cp . OScale $meter_per_pixel $scale_height;
+	echo '</svg>'
+) | xmlstarlet fo
+
+rm -rf "$tmpdir"
