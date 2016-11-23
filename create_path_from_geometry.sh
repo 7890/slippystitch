@@ -47,7 +47,7 @@ svg_path()
 echo '<g id="group_features_geometry" clip-path="url(#clipPath_page)" transform="translate(0,0)">'
 
 #get list of every visible layer having features
-cat ~/download/map_view.xml | xmlstarlet sel -t -m "//layer[@visible='true']/features/feature" -v ../../@name -n \
+cat "$view_xml" | xmlstarlet sel -t -m "//layer[@visible='true']/features/feature" -v ../../@name -n \
 	| while read line; do svg_path "$line"; done
 
 echo '</g>'
